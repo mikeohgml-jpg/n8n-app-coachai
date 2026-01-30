@@ -47,7 +47,7 @@ export function Message({ message }: MessageProps) {
             {message.content}
           </p>
         ) : (
-          <div className="text-sm leading-relaxed prose prose-sm dark:prose-invert prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 max-w-none">
+          <div className="text-sm leading-relaxed markdown-content">
             <ReactMarkdown>{message.content}</ReactMarkdown>
           </div>
         )}
