@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChatContainer } from "@/components/chat";
 import { GamificationPanel } from "@/components/gamification";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -11,7 +11,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Dumbbell, Trophy, ChevronUp } from "lucide-react";
+import { Dumbbell, Trophy, ChevronUp, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -23,6 +23,25 @@ export default function Home() {
     topicsDiscussed: [],
   });
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show loading state during hydration
+  if (!mounted) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+            <Dumbbell className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen flex flex-col bg-background">

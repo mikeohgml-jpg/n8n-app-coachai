@@ -18,18 +18,25 @@ export function useChat() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  // Initialize from localStorage
+  // Mark as mounted on client
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Initialize from localStorage only on client
+  useEffect(() => {
+    if (!mounted) return;
     const data = getStoredData();
     setMessages(data.messages);
     setSessionId(data.sessionId);
     setStats(data.stats);
-  }, []);
+  }, [mounted]);
 
   const send = useCallback(
     async (content: string) => {
-      if (!content.trim() || isLoading) return;
+      if (!content.trim() || isLoading || !mounted) return;
 
       setError(null);
 
@@ -71,14 +78,15 @@ export function useChat() {
         setIsLoading(false);
       }
     },
-    [sessionId, isLoading]
+    [sessionId, isLoading, mounted]
   );
 
   const clearChat = useCallback(() => {
+    if (!mounted) return;
     const data = startNewSession();
     setMessages(data.messages);
     setSessionId(data.sessionId);
-  }, []);
+  }, [mounted]);
 
   return {
     messages,
