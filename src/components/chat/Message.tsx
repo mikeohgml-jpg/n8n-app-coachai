@@ -4,6 +4,7 @@ import { Message as MessageType } from "@/types";
 import { motion } from "framer-motion";
 import { User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ReactMarkdown from "react-markdown";
 
 interface MessageProps {
   message: MessageType;
@@ -41,9 +42,15 @@ export function Message({ message }: MessageProps) {
             : "bg-card border border-border rounded-bl-sm"
         )}
       >
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {message.content}
-        </p>
+        {isUser ? (
+          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+            {message.content}
+          </p>
+        ) : (
+          <div className="text-sm leading-relaxed prose prose-sm dark:prose-invert prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1 prose-li:my-0 max-w-none">
+            <ReactMarkdown>{message.content}</ReactMarkdown>
+          </div>
+        )}
         <span
           className={cn(
             "text-xs",
