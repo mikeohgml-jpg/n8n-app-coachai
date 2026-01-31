@@ -3,8 +3,12 @@
 import { useState, useEffect, useCallback } from "react";
 
 const AUTH_KEY = "coachai_authenticated";
-const VALID_USERNAME = "Mikeoh";
-const VALID_PASSWORD = "TiTu3198";
+
+// Valid users
+const VALID_USERS = [
+  { username: "Mikeoh", password: "TiTu3198" },
+  { username: "Guest", password: "Healthy2323" },
+];
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +21,10 @@ export function useAuth() {
   }, []);
 
   const login = useCallback((username: string, password: string): boolean => {
-    if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+    const isValid = VALID_USERS.some(
+      (user) => user.username === username && user.password === password
+    );
+    if (isValid) {
       localStorage.setItem(AUTH_KEY, "true");
       setIsAuthenticated(true);
       return true;
