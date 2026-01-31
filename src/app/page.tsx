@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { ChatContainer } from "@/components/chat";
 import { GamificationPanel } from "@/components/gamification";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LoginForm } from "@/components/auth/LoginForm";
+import { useAuth } from "@/hooks/useAuth";
 import { Stats } from "@/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,10 +13,11 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Dumbbell, Trophy, ChevronUp, Loader2 } from "lucide-react";
+import { Dumbbell, Trophy, ChevronUp, Loader2, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
+  const { isAuthenticated, isLoading: authLoading, login, logout } = useAuth();
   const [stats, setStats] = useState<Stats>({
     totalMessages: 0,
     firstMessageDate: null,
@@ -30,7 +33,7 @@ export default function Home() {
   }, []);
 
   // Show loading state during hydration
-  if (!mounted) {
+  if (!mounted || authLoading) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
@@ -41,6 +44,11 @@ export default function Home() {
         </div>
       </div>
     );
+  }
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <LoginForm onLogin={login} />;
   }
 
   return (
@@ -77,6 +85,16 @@ export default function Home() {
           </div>
 
           <ThemeToggle />
+
+          {/* Logout button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={logout}
+            title="Sign out"
+          >
+            <LogOut className="w-4 h-4" />
+          </Button>
         </div>
       </header>
 
