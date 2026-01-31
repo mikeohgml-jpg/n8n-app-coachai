@@ -4,7 +4,8 @@ const WEBHOOK_URL =
   process.env.NEXT_PUBLIC_WEBHOOK_URL ||
   "https://n8n.srv1024604.hstgr.cloud/webhook/fitness-coach";
 
-const WEBHOOK_TOKEN = process.env.NEXT_PUBLIC_WEBHOOK_TOKEN || "";
+const WEBHOOK_USER = process.env.NEXT_PUBLIC_WEBHOOK_USER || "";
+const WEBHOOK_PASS = process.env.NEXT_PUBLIC_WEBHOOK_PASS || "";
 
 export async function sendMessage(
   message: string,
@@ -14,8 +15,10 @@ export async function sendMessage(
     "Content-Type": "application/json",
   };
 
-  if (WEBHOOK_TOKEN) {
-    headers["X-Webhook-Token"] = WEBHOOK_TOKEN;
+  // Add Basic Auth if credentials are configured
+  if (WEBHOOK_USER && WEBHOOK_PASS) {
+    const credentials = btoa(`${WEBHOOK_USER}:${WEBHOOK_PASS}`);
+    headers["Authorization"] = `Basic ${credentials}`;
   }
 
   const response = await fetch(WEBHOOK_URL, {
