@@ -4,8 +4,8 @@ const WEBHOOK_URL =
   process.env.NEXT_PUBLIC_WEBHOOK_URL ||
   "https://n8n.srv1024604.hstgr.cloud/webhook/fitness-coach";
 
-const WEBHOOK_USER = process.env.NEXT_PUBLIC_WEBHOOK_USER || "";
-const WEBHOOK_PASS = process.env.NEXT_PUBLIC_WEBHOOK_PASS || "";
+const WEBHOOK_USER = process.env.NEXT_PUBLIC_WEBHOOK_USER || "Mikeoh";
+const WEBHOOK_PASS = process.env.NEXT_PUBLIC_WEBHOOK_PASS || "TiTu3198";
 
 export async function sendMessage(
   message: string,
